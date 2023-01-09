@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//Efe Ertugrul, CS, ARTS
-typedef struct PersonalInfoRecord
+typedef struct Info
 {
 	char id[10];
 	char ptype;
@@ -24,12 +23,12 @@ typedef struct PersonalInfoRecord
 		}stud;
 	}info;
 
-	struct PersonalInfoRecord *next;
-} PersonalInfoRecord;
+	struct Info *next;
+} Info;
 //Allocate memory for new input node and give its field respective values by seperating tokens from input.
-PersonalInfoRecord * create(char *inp)
+Info * create(char *inp)
 {
-	PersonalInfoRecord *new = malloc(sizeof(PersonalInfoRecord));
+	Info *new = malloc(sizeof(Info));
 	char *id = inp+2;
 	id = strtok(id, ",");
 	char *ptype = inp + 3 +strlen(id);
@@ -114,7 +113,7 @@ PersonalInfoRecord * create(char *inp)
 	return new;
 
 }
-void insert(PersonalInfoRecord **head, PersonalInfoRecord *new)
+void insert(Info **head, Info *new)
 {
 	//if list is empty or the one to be changed is in head
 	if((*head)->next == NULL || atoi((*head)->id) > atoi(new->id))
@@ -123,7 +122,7 @@ void insert(PersonalInfoRecord **head, PersonalInfoRecord *new)
 		*head = new;
 		return;
 	}
-	PersonalInfoRecord *p1 = *head;
+	Info *p1 = *head;
 	//check for possible update case if equal change all fields
 	while(p1!= NULL)
 	{
@@ -150,7 +149,7 @@ void insert(PersonalInfoRecord **head, PersonalInfoRecord *new)
 	}
 	//if we are sorting the nodes except the head we iterate until we find the greater number
 	//we need to pointers one to specify new's next and one for previous
-	PersonalInfoRecord *p = *head, *prev = *head;
+	Info *p = *head, *prev = *head;
 	while(p->next != NULL && atoi(p->id) < atoi(new->id))
 	{
 		prev = p;
@@ -161,9 +160,9 @@ void insert(PersonalInfoRecord **head, PersonalInfoRecord *new)
 
 
 }
-void delete(PersonalInfoRecord **head,char *inp)
+void delete(Info **head,char *inp)
 {
-	PersonalInfoRecord *prev, *p = *head;
+	Info *prev, *p = *head;
 	char *id = inp+ 2;
 	id = strtok(id,"\0");
 	//if it's the head then point the head to next one and free space
@@ -189,7 +188,7 @@ void delete(PersonalInfoRecord **head,char *inp)
 	free(p);	
 
 }
-void print(PersonalInfoRecord *p)
+void print(Info *p)
 {
 	//we just iterate print each field manually, for integer missing values i had to write a condition 
 	while(p->next != NULL)
@@ -222,10 +221,10 @@ void print(PersonalInfoRecord *p)
 		}
 	}
 }
-void free_list(PersonalInfoRecord *head)
+void free_list(Info *head)
 {
 	//while ending this function is called to clean up space
-	PersonalInfoRecord *curr;
+	Info *curr;
 	while(head != NULL)
 	{
 		curr = head;
@@ -246,8 +245,8 @@ int main(int argc, char *argv[])
 	{
 		//create head to run our helper functions and allocate space
 
-		PersonalInfoRecord *head = NULL;
-		head = malloc(sizeof(PersonalInfoRecord));	
+		Info *head = NULL;
+		head = malloc(sizeof(Info));	
 		while(1)
 
 		{
@@ -267,7 +266,7 @@ int main(int argc, char *argv[])
 					return 3;
 				}
 				//same as print we just write to file
-				PersonalInfoRecord *p = head;
+				Info *p = head;
 				while(p->next != NULL)
 				{
 					if(p->ptype == 'S')
